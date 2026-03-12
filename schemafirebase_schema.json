@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2024-01-15T00:00:00Z",
+  "collections": {
+    "workers": {
+      "indexes": [
+        {"field": "status", "order": "ASC"},
+        {"field": "created", "order": "DESC"}
+      ],
+      "fields": {
+        "address": "string",
+        "status": "string",
+        "pool": "string",
+        "range_lower": "number",
+        "range_upper": "number",
+        "capital": "number",
+        "created": "timestamp",
+        "filled_at": "timestamp",
+        "profit": "number",
+        "gas_used": "number",
+        "transaction_hash": "string"
+      }
+    },
+    "trades": {
+      "indexes": [
+        {"field": "timestamp", "order": "DESC"}
+      ],
+      "fields": {
+        "worker_address": "string",
+        "type": "string",
+        "amount_in": "number",
+        "amount_out": "number",
+        "price": "number",
+        "gas_cost": "number",
+        "net_profit": "number",
+        "timestamp": "timestamp",
+        "block_number": "number"
+      }
+    },
+    "system_health": {
+      "fields": {
+        "event_processor_status": "string",
+        "last_heartbeat": "timestamp",
+        "queen_balance": "number",
+        "active_workers": "number",
+        "total_profit_24h": "number",
+        "avg_fill_time_ms": "number",
+        "alerts_active": "array"
+      }
+    },
+    "market_regimes": {
+      "fields": {
+        "regime": "string",
+        "volatility_score": "number",
+        "liquidity_score": "number",
+        "gas_price_gwei": "number",
+        "dominant_pool": "string",
+        "detected_at": "timestamp",
+        "parameters": {
+          "position_size_multiplier": "number",
+          "spread_bps": "number",
+          "cooldown_seconds": "number"
+        }
+      }
+    },
+    "simulations": {
+      "indexes": [
+        {"field": "timestamp", "order": "DESC"}
+      ],
+      "fields": {
+        "parameters": "map",
+        "simulated_profit_24h": "number",
+        "success_rate": "number",
+        "max_drawdown": "number",
+        "timestamp": "timestamp"
+      }
+    }
+  },
+  "document_rules": {
+    "workers": {
+      "required_fields": ["address", "status", "created"],
+      "status_values": ["active", "filled", "cancelled", "dead"]
+    },
+    "system_health": {
+      "must_exist": true,
+      "update_frequency_seconds": 30
+    }
+  }
+}
